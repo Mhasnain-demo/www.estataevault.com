@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EstateVault — Premium Property Marketplace Pakistan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--canvas:#F0F4F8;--cloud:#FFFFFF;--eb:#0047FF;--ebd:#0035CC;--ebl:#3D6EFF;--ebg:rgba(0,71,255,0.12);--navy:#051B3F;--slate:#4A5568;--ls:#718096;--border:#E2E8F0;--sb:rgba(0,71,255,0.2);--ok:#00C897;--warn:#FF7A00;--danger:#FF3B5C;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--canvas);color:var(--navy);overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Playfair Display',serif}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--canvas)}::-webkit-scrollbar-thumb{background:var(--eb);border-radius:3px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,71,255,0.07)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--navy);text-decoration:none;cursor:pointer}
+.nav-logo span{color:var(--eb)}
+.nav-links{display:flex;gap:4px;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;color:var(--slate);font-weight:500;font-size:0.88rem;padding:8px 14px;border-radius:8px;transition:all .2s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:var(--eb);background:var(--ebg)}
+.btn-nav{background:var(--eb)!important;color:white!important;border-radius:10px!important;padding:8px 18px!important;font-weight:600!important;box-shadow:0 4px 15px var(--sb)}
+.btn-nav:hover{background:var(--ebd)!important;transform:translateY(-1px)}
+.nav-toggle{display:none;cursor:pointer;font-size:1.4rem;color:var(--navy)}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO */
+.hero{min-height:100vh;background:linear-gradient(135deg,#051B3F 0%,#0A2B5C 40%,#0047FF 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding:120px 60px 80px}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle fill='%230047FF' fill-opacity='.07' cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/svg%3E")}
+.blob{position:absolute;border-radius:50%;background:var(--eb);filter:blur(80px);opacity:.25;animation:bpulse 8s infinite alternate}
+.b1{width:500px;height:500px;top:-100px;right:-100px}
+.b2{width:300px;height:300px;bottom:50px;left:30%;animation-delay:3s}
+@keyframes bpulse{0%{transform:scale(1);opacity:.25}100%{transform:scale(1.2);opacity:.12}}
+.hero-content{position:relative;z-index:2;max-width:720px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);border-radius:100px;padding:6px 16px;font-size:.82rem;font-weight:500;margin-bottom:24px;backdrop-filter:blur(10px)}
+.badge-dot{width:8px;height:8px;background:var(--ok);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2.4rem,5vw,3.8rem);color:white;line-height:1.1;margin-bottom:20px;font-weight:900}
+.hero h1 span{color:#7AADFF}
+.hero p{color:rgba(255,255,255,.72);font-size:1.05rem;line-height:1.7;margin-bottom:36px;max-width:560px}
+.search-wrap{background:white;border-radius:18px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:700px}
+.search-field{flex:1;min-width:130px;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--canvas);transition:all .2s}
+.search-field:hover{border-color:var(--eb);background:var(--ebg)}
+.search-field select,.search-field input{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--navy);outline:none;width:100%}
+.search-field label{font-size:.68rem;color:var(--ls);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block}
+.btn-search{background:var(--eb);color:white;border:none;border-radius:10px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 4px 15px var(--sb)}
+.btn-search:hover{background:var(--ebd);transform:translateY(-1px)}
+.hero-stats{display:flex;gap:40px;margin-top:48px}
+.hstat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#7AADFF}
+.hstat-lbl{font-size:.82rem;color:rgba(255,255,255,.55);margin-top:2px}
+
+/* SECTION */
+.section{padding:90px 60px}
+.section-alt{background:white}
+.section-header{text-align:center;margin-bottom:56px}
+.section-tag{display:inline-block;color:var(--eb);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;background:var(--ebg);padding:6px 16px;border-radius:100px;margin-bottom:14px}
+.section-header h2{font-size:clamp(1.7rem,3vw,2.6rem);color:var(--navy);margin-bottom:14px}
+.section-header p{color:var(--ls);font-size:1rem;max-width:500px;margin:0 auto}
+
+/* CATEGORY PILLS */
+.cat-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.cat-pill{display:flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;border:2px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:.88rem;color:var(--slate);transition:all .25s}
+.cat-pill:hover,.cat-pill.active{background:var(--eb);color:white;border-color:var(--eb);box-shadow:0 6px 20px var(--sb);transform:translateY(-2px)}
+
+/* PROPERTY CARDS */
+.props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.prop-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:all .3s;cursor:pointer;border:1px solid var(--border)}
+.prop-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,71,255,.15);border-color:var(--eb)}
+.prop-img-wrap{position:relative;overflow:hidden;height:210px}
+.prop-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.prop-card:hover .prop-img-wrap img{transform:scale(1.05)}
+.prop-badge{position:absolute;top:12px;left:12px;background:var(--eb);color:white;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 11px;border-radius:100px}
+.prop-badge.sale{background:var(--ok)}.prop-badge.hot{background:var(--warn)}.prop-badge.rent{background:#8B5CF6}
+.prop-fav{position:absolute;top:12px;right:12px;width:34px;height:34px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;box-shadow:0 2px 10px rgba(0,0,0,.1);transition:all .2s;cursor:pointer}
+.prop-fav:hover{transform:scale(1.1)}
+.prop-vid-icon{position:absolute;bottom:12px;right:12px;width:34px;height:34px;background:rgba(0,0,0,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:.85rem}
+.prop-info{padding:18px}
+.prop-price{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--eb);margin-bottom:5px}
+.prop-title{font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:7px}
+.prop-loc{font-size:.82rem;color:var(--ls);margin-bottom:14px}
+.prop-feats{display:flex;gap:14px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap}
+.prop-feat{display:flex;align-items:center;gap:5px;font-size:.8rem;color:var(--slate);font-weight:500}
+
+/* DETAIL */
+.detail-hero{background:var(--navy);padding:100px 60px 56px}
+.detail-bc{color:rgba(255,255,255,.45);font-size:.82rem;margin-bottom:18px}
+.detail-bc span,.detail-bc a{color:rgba(255,255,255,.7);text-decoration:none;cursor:pointer}
+.detail-bc a:hover{color:white}
+.detail-hero h1{color:white;font-size:2rem;margin-bottom:12px}
+.detail-price{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:#7AADFF}
+.detail-meta{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.detail-body{display:grid;grid-template-columns:1fr 340px;gap:36px;padding:56px 60px;max-width:1280px;margin:0 auto}
+.detail-gallery{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:280px 180px;gap:10px;border-radius:18px;overflow:hidden;margin-bottom:36px}
+.g-main{grid-row:1/3}.g-thumb{overflow:hidden;cursor:pointer}
+.g-main img,.g-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.g-thumb:hover img{transform:scale(1.04)}
+.g-main{overflow:hidden}
+.detail-video{margin-bottom:28px}
+.detail-video h3{font-size:1.2rem;color:var(--navy);margin-bottom:12px}
+.video-wrap{position:relative;padding-bottom:56.25%;border-radius:14px;overflow:hidden;background:#000}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.dfeat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}
+.dfeat-item{background:var(--canvas);border-radius:12px;padding:14px;text-align:center}
+.dfeat-icon{font-size:1.4rem;margin-bottom:6px}
+.dfeat-val{font-weight:700;color:var(--navy);font-size:.95rem}
+.dfeat-lbl{font-size:.74rem;color:var(--ls)}
+.sidebar-card{background:white;border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid var(--border);margin-bottom:18px}
+.sidebar-card h4{font-size:1rem;color:var(--navy);margin-bottom:18px}
+.seller-info{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.seller-av{width:52px;height:52px;border-radius:50%;background:var(--eb);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:white;font-weight:700}
+.seller-name{font-weight:700;color:var(--navy)}
+.seller-role{font-size:.8rem;color:var(--ls)}
+.contact-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem;color:var(--slate)}
+.contact-row:last-child{border-bottom:none}
+.contact-row a{color:var(--eb);text-decoration:none;font-weight:600}
+.contact-row a:hover{text-decoration:underline}
+.btn-primary{width:100%;background:var(--eb);color:white;border:none;border-radius:12px;padding:13px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:8px;box-shadow:0 4px 15px var(--sb)}
+.btn-primary:hover{background:var(--ebd);transform:translateY(-1px)}
+.btn-outline{width:100%;background:transparent;color:var(--eb);border:2px solid var(--eb);border-radius:12px;padding:11px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.btn-outline:hover{background:var(--ebg)}
+.btn-wa{width:100%;background:#25D366;color:white;border:none;border-radius:12px;padding:11px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.btn-wa:hover{background:#1ebe5c}
+.map-ph{background:var(--canvas);border-radius:14px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:1px solid var(--border)}
+.map-pin{font-size:2rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* FILTERS */
+.filters-panel{background:white;border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid var(--border);margin-bottom:36px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.filter-group{flex:1;min-width:150px}
+.filter-group label{display:block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ls);margin-bottom:7px}
+.filter-select,.filter-input{width:100%;padding:10px 13px;border-radius:10px;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--navy);background:var(--canvas);outline:none;transition:border .2s}
+.filter-select:focus,.filter-input:focus{border-color:var(--eb)}
+.btn-filter{background:var(--eb);color:white;border:none;border-radius:10px;padding:10px 24px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;height:40px;box-shadow:0 4px 15px var(--sb)}
+.btn-filter:hover{background:var(--ebd)}
+
+/* AUTH */
+.auth-page{min-height:100vh;background:linear-gradient(135deg,#051B3F 0%,#0047FF 100%);display:flex;align-items:center;justify-content:center;padding:100px 20px 40px}
+.auth-card{background:white;border-radius:26px;padding:44px;width:100%;max-width:460px;box-shadow:0 40px 80px rgba(0,0,0,.3)}
+.auth-card h2{font-size:1.9rem;color:var(--navy);margin-bottom:6px}
+.auth-card>p{color:var(--ls);margin-bottom:28px;font-size:.9rem}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--navy);margin-bottom:7px}
+.form-input{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);outline:none;transition:all .2s;background:var(--canvas)}
+.form-input:focus{border-color:var(--eb);background:white;box-shadow:0 0 0 4px var(--ebg)}
+.auth-switch{text-align:center;margin-top:20px;font-size:.87rem;color:var(--ls)}
+.auth-switch a{color:var(--eb);font-weight:600;text-decoration:none;cursor:pointer}
+
+/* DASHBOARD */
+.dash-layout{display:flex;min-height:100vh;padding-top:68px}
+.sidebar{width:252px;min-width:252px;background:var(--navy);padding:28px 0;position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto}
+.sb-logo{padding:0 22px 26px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-logo p{color:rgba(255,122,0,.8);font-size:.72rem;font-weight:700;margin-top:4px}
+.sb-menu{list-style:none;padding:18px 0}
+.sb-menu li a{display:flex;align-items:center;gap:12px;padding:11px 22px;color:rgba(255,255,255,.62);text-decoration:none;font-size:.88rem;font-weight:500;transition:all .2s;border-left:3px solid transparent;cursor:pointer}
+.sb-menu li a:hover,.sb-menu li a.active{color:white;background:rgba(255,255,255,.08);border-left-color:#3D6EFF}
+.sb-menu .menu-icon{font-size:1rem;width:18px;text-align:center}
+.sb-section{padding:14px 22px 6px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.28)}
+.dash-main{flex:1;padding:36px;background:var(--canvas);overflow-y:auto}
+.dash-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:14px}
+.dash-hdr h2{font-size:1.7rem;color:var(--navy)}
+.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;margin-bottom:36px}
+.dsc{background:white;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid var(--border);position:relative;overflow:hidden}
+.dsc::before{content:'';position:absolute;top:0;right:0;width:70px;height:70px;border-radius:0 0 0 100%;background:var(--ebg)}
+.stat-icon{font-size:1.6rem;margin-bottom:10px}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--navy)}
+.stat-label{font-size:.78rem;color:var(--ls);font-weight:500;margin-top:3px}
+.stat-change{font-size:.74rem;font-weight:600;color:var(--ok);margin-top:5px}
+.dash-section{background:white;border-radius:18px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid var(--border);margin-bottom:24px}
+.dash-section h3{font-size:1.1rem;color:var(--navy);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+.admin-panel{display:none}.admin-panel.show{display:block}
+
+/* ADMIN TABLE */
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{padding:11px 14px;text-align:left;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ls);background:var(--canvas);border-bottom:2px solid var(--border)}
+.admin-table td{padding:13px 14px;font-size:.86rem;color:var(--navy);border-bottom:1px solid var(--border);vertical-align:middle}
+.admin-table tr:hover td{background:var(--canvas)}
+.action-btn{padding:5px 11px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;margin-right:3px}
+.action-btn.approve{background:rgba(0,200,151,.12);color:var(--ok)}.action-btn.approve:hover{background:var(--ok);color:white}
+.action-btn.del{background:rgba(255,59,92,.1);color:var(--danger)}.action-btn.del:hover{background:var(--danger);color:white}
+.action-btn.edit{background:var(--ebg);color:var(--eb)}.action-btn.edit:hover{background:var(--eb);color:white}
+.action-btn.view{background:rgba(0,200,151,.1);color:var(--ok)}.action-btn.view:hover{background:var(--ok);color:white}
+
+/* STATUS BADGES */
+.sbadge{font-size:.7rem;font-weight:700;padding:4px 9px;border-radius:100px}
+.s-active{background:rgba(0,200,151,.12);color:var(--ok)}
+.s-pending{background:rgba(255,122,0,.12);color:var(--warn)}
+.s-sold{background:rgba(0,71,255,.1);color:var(--eb)}
+.s-rent{background:rgba(139,92,246,.12);color:#8B5CF6}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.feature-card{background:white;border-radius:18px;padding:28px;border:1px solid var(--border);transition:all .3s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px var(--sb);border-color:var(--eb)}
+.feature-icon{width:52px;height:52px;background:var(--ebg);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px}
+.feature-card h4{font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:9px}
+.feature-card p{color:var(--ls);font-size:.85rem;line-height:1.7}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px}
+.testi-card{background:white;border-radius:18px;padding:26px;border:1px solid var(--border)}
+.testi-stars{color:#FFB400;font-size:.88rem;margin-bottom:12px}
+.testi-card p{color:var(--slate);font-size:.87rem;line-height:1.7;margin-bottom:18px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:11px}
+.testi-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--eb),var(--navy));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.85rem}
+.testi-name{font-weight:700;color:var(--navy);font-size:.87rem}
+.testi-role{font-size:.76rem;color:var(--ls)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--navy),var(--eb));padding:90px 60px;text-align:center}
+.cta-section h2{color:white;font-size:2.6rem;margin-bottom:14px}
+.cta-section p{color:rgba(255,255,255,.72);font-size:1rem;margin-bottom:36px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:white;color:var(--eb);border:none;border-radius:14px;padding:14px 34px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .2s}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.btn-transp{background:transparent;color:white;border:2px solid rgba(255,255,255,.38);border-radius:14px;padding:12px 34px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .2s}
+.btn-transp:hover{background:rgba(255,255,255,.1)}
+
+/* SELL FORM */
+.sell-page{padding:100px 60px 80px;max-width:900px;margin:0 auto}
+.sell-page h1{font-size:2rem;color:var(--navy);margin-bottom:6px}
+.sell-page>p{color:var(--ls);margin-bottom:36px}
+.form-card{background:white;border-radius:18px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid var(--border);margin-bottom:22px}
+.form-card h3{font-size:1.1rem;color:var(--navy);margin-bottom:22px;display:flex;align-items:center;gap:9px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr}
+.form-group textarea{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);outline:none;transition:all .2s;background:var(--canvas);resize:vertical;min-height:110px}
+.form-group textarea:focus{border-color:var(--eb);background:white}
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;background:var(--canvas)}
+.upload-zone:hover{border-color:var(--eb);background:var(--ebg)}
+.upload-zone-icon{font-size:2.2rem;margin-bottom:10px}
+.upload-zone p{color:var(--ls);font-size:.87rem}
+.upload-zone span{color:var(--eb);font-weight:600}
+
+/* CONTACT */
+.contact-page{padding:100px 60px 80px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;max-width:1100px;margin:0 auto}
+.contact-info h2{font-size:2.3rem;color:var(--navy);margin-bottom:18px}
+.contact-info>p{color:var(--ls);line-height:1.8;margin-bottom:36px}
+.contact-item{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start}
+.contact-icon{width:46px;height:46px;background:var(--ebg);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.contact-item h4{font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+.contact-item p,.contact-item a{font-size:.86rem;color:var(--ls);text-decoration:none;line-height:1.6}
+.contact-item a:hover{color:var(--eb)}
+.contact-social{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.csoc-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:600;text-decoration:none;transition:all .2s;color:white}
+.csoc-btn.fb{background:#1877F2}.csoc-btn.ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.csoc-btn.yt{background:#FF0000}.csoc-btn.wa{background:#25D366}
+.csoc-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.contact-form-card{background:white;border-radius:20px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid var(--border)}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.58);padding:66px 60px 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:46px}
+.footer-brand p{font-size:.86rem;line-height:1.7;margin:14px 0 22px;max-width:280px}
+.footer-col h5{color:white;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:9px}
+.footer-col ul li a{color:rgba(255,255,255,.48);text-decoration:none;font-size:.86rem;transition:color .2s;cursor:pointer}
+.footer-col ul li a:hover{color:white}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.09);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:.8rem}
+.social-links{display:flex;gap:10px}
+.social-btn{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:700;transition:all .2s}
+.social-btn:hover{background:var(--eb);color:white}
+.footer-social-label{font-size:.72rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}
+.footer-contact-info{margin-top:16px;display:flex;flex-direction:column;gap:6px}
+.footer-contact-info a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.84rem;transition:color .2s}
+.footer-contact-info a:hover{color:white}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy);color:white;padding:14px 22px;border-radius:12px;font-size:.88rem;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.25);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:9px;border-left:4px solid var(--eb);max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,27,63,.6);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:white;border-radius:22px;padding:34px;max-width:480px;width:90%;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.modal-box h3{font-size:1.3rem;color:var(--navy);margin-bottom:10px}
+.modal-box p{color:var(--slate);margin-bottom:22px;font-size:.9rem}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.modal-btn{padding:10px 22px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;border:none;transition:all .2s}
+.modal-btn.primary{background:var(--eb);color:white}.modal-btn.secondary{background:var(--canvas);color:var(--slate)}
+
+/* DEMO TAG */
+.demo-tag{background:var(--ebg);color:var(--eb);font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:100px;vertical-align:middle;margin-left:6px}
+
+/* VIDEO MODAL */
+.vmodal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
+.vmodal.show{display:flex}
+.vmodal-inner{position:relative;width:100%;max-width:900px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000}
+.vmodal-inner iframe{width:100%;height:100%;border:none}
+.vmodal-close{position:absolute;top:-44px;right:0;background:white;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem;font-weight:700}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.detail-body{grid-template-columns:1fr;padding:36px}.footer-grid{grid-template-columns:1fr 1fr}.contact-grid{grid-template-columns:1fr}}
+@media(max-width:768px){
+  nav{padding:0 16px}.nav-links{display:none}.nav-toggle{display:block}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:68px;left:0;right:0;background:white;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.1);z-index:999}
+  .hero{padding:100px 20px 56px}.hero-stats{gap:20px;flex-wrap:wrap}
+  .section{padding:64px 20px}.sell-page,.contact-page{padding:100px 20px 56px}
+  .detail-hero{padding:100px 20px 36px}.detail-gallery{grid-template-columns:1fr;grid-template-rows:auto}
+  .g-main{grid-row:auto}.footer-grid{grid-template-columns:1fr;gap:28px}
+  footer{padding:44px 20px 22px}.form-grid,.form-grid.three{grid-template-columns:1fr}
+  .dfeat-grid{grid-template-columns:repeat(2,1fr)}.filters-panel{flex-direction:column}
+  .dash-layout{flex-direction:column}.sidebar{width:100%;min-width:unset;position:static;height:auto}
+  .dash-main{padding:20px}.cta-section{padding:64px 20px}.cta-section h2{font-size:2rem}
+  .search-wrap{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo" onclick="showPage('home')">Estate<span>Vault</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('buy')">Buy Property</a></li>
+    <li><a onclick="showPage('sell')">Sell Property</a></li>
+    <li><a onclick="showPage('contact')">Contact</a></li>
+    <li><a onclick="showPage('admin')" style="color:var(--warn);font-weight:700">⚙️ Admin</a></li>
+    <li><a onclick="showPage('login')" class="btn-nav">Login / Sign Up</a></li>
+  </ul>
+  <span class="nav-toggle" onclick="toggleNav()">☰</span>
+</nav>
+
+<!-- ==================== HOME ==================== -->
+<div id="page-home" class="page active fade-in">
+  <section class="hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="badge-dot"></span> Pakistan's #1 Property Marketplace</div>
+      <h1>Find Your <span>Dream Home</span><br>With Confidence</h1>
+      <p>Explore thousands of verified properties across Pakistan — houses, apartments, plots & commercial spaces in Islamabad, Lahore, Karachi, Rawalpindi and more.</p>
+      <div class="search-wrap">
+        <div class="search-field"><div><label>City</label>
+          <select id="searchCity"><option>All Cities</option><option>Islamabad</option><option>Lahore</option><option>Karachi</option><option>Rawalpindi</option><option>Faisalabad</option><option>Peshawar</option><option>Multan</option><option>Quetta</option><option>Sialkot</option></select></div></div>
+        <div class="search-field"><div><label>Type</label>
+          <select id="searchType"><option>All Types</option><option>House</option><option>Apartment</option><option>Plot</option><option>Commercial</option></select></div></div>
+        <div class="search-field"><div><label>Max Price</label>
+          <input type="text" id="searchPrice" placeholder="e.g. 5 Crore"></div></div>
+        <button class="btn-search" onclick="doSearch()">🔍 Search</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hstat-num">18K+</div><div class="hstat-lbl">Active Listings</div></div>
+        <div><div class="hstat-num">5.2K+</div><div class="hstat-lbl">Happy Buyers</div></div>
+        <div><div class="hstat-num">98%</div><div class="hstat-lbl">Verified Properties</div></div>
+        <div><div class="hstat-num">14</div><div class="hstat-lbl">Cities Covered</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section section-alt">
+    <div class="section-header">
+      <div class="section-tag">Browse by Type</div>
+      <h2>Explore Property Categories</h2>
+      <p>Find exactly what you're looking for across Pakistan's top cities</p>
+    </div>
+    <div class="cat-row">
+      <div class="cat-pill active" onclick="filterCat(this,'all')">🏘️ All Properties</div>
+      <div class="cat-pill" onclick="filterCat(this,'house')">🏠 Houses</div>
+      <div class="cat-pill" onclick="filterCat(this,'apartment')">🏢 Apartments</div>
+      <div class="cat-pill" onclick="filterCat(this,'plot')">🌿 Plots</div>
+      <div class="cat-pill" onclick="filterCat(this,'commercial')">🏗️ Commercial</div>
+    </div>
+    <div class="props-grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section">
+    <div class="section-header"><div class="section-tag">Why Choose Us</div><h2>Everything You Need in One Place</h2></div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">🔒</div><h4>Verified Listings</h4><p>Every property is manually reviewed before going live. No scams, no fake listings — guaranteed.</p></div>
+      <div class="feature-card"><div class="feature-icon">📹</div><h4>Video Tours</h4><p>Watch full video walkthroughs of properties before visiting. Save time with virtual tours.</p></div>
+      <div class="feature-card"><div class="feature-icon">⚡</div><h4>Instant Alerts</h4><p>Get notified the moment a property matching your criteria is listed. Never miss a deal.</p></div>
+      <div class="feature-card"><div class="feature-icon">💬</div><h4>Direct Messaging</h4><p>Contact sellers directly via WhatsApp, call, or email right from the listing page.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h4>Price Analytics</h4><p>See price trends and market data to make the most informed investment decisions.</p></div>
+      <div class="feature-card"><div class="feature-icon">🗺️</div><h4>Map Search</h4><p>Find properties by neighborhood, proximity to schools, hospitals or amenities.</p></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section-alt">
+    <div class="section-header"><div class="section-tag">Client Stories</div><h2>Trusted by Thousands</h2></div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"Found my dream house in DHA Islamabad within 2 weeks. The platform made the entire process incredibly smooth."</p><div class="testi-author"><div class="testi-av">AK</div><div><div class="testi-name">Adnan Khan</div><div class="testi-role">Buyer · Islamabad</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"Sold my Lahore apartment in just 3 days! The video tour feature attracted so many genuine buyers overnight."</p><div class="testi-author"><div class="testi-av">SR</div><div><div class="testi-name">Sara Rehman</div><div class="testi-role">Seller · Lahore</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★☆</div><p>"The filter system is amazing. Found the perfect commercial plot in Karachi Blue Area at exactly my budget."</p><div class="testi-author"><div class="testi-av">MH</div><div><div class="testi-name">Muhammad Hassan</div><div class="testi-role">Investor · Karachi</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"Bought a 10-Marla plot in Bahria Town Phase 8 through EstateVault. The process was transparent and quick!"</p><div class="testi-author"><div class="testi-av">FZ</div><div><div class="testi-name">Fatima Zahra</div><div class="testi-role">Buyer · Rawalpindi</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to List Your Property?</h2>
+    <p>Join over 5,000 sellers who have successfully sold properties on EstateVault</p>
+    <div class="cta-btns">
+      <button class="btn-white" onclick="showPage('sell')">🏠 List Your Property</button>
+      <button class="btn-transp" onclick="showPage('buy')">Browse Properties →</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:900;color:white;">Estate<span style="color:#7AADFF;">Vault</span></div>
+        <p>Pakistan's most trusted real estate marketplace. Buy, sell & rent with confidence across all major cities.</p>
+        <div class="footer-contact-info">
+          <a href="/cdn-cgi/l/email-protection#0e676068614e6b7d7a6f7a6b786f7b627a207e65">✉️ <span class="__cf_email__" data-cfemail="0d64636b624d687e796c79687b6c786179237d66">[email&#160;protected]</span></a>
+          <a href="tel:+925112345678">📞 +92 51 1234567</a>
+          <a href="https://wa.me/923009876543" target="_blank">💬 WhatsApp: +92 300 9876543</a>
+        </div>
+        <div style="margin-top:20px">
+          <div class="footer-social-label">Follow Us</div>
+          <div class="social-links">
+            <a href="https://facebook.com/estatevaultpk" target="_blank" class="social-btn" title="Facebook">f</a>
+            <a href="https://instagram.com/estatevaultpk" target="_blank" class="social-btn" title="Instagram">ig</a>
+            <a href="https://youtube.com/@estatevaultpk" target="_blank" class="social-btn" title="YouTube">yt</a>
+            <a href="https://wa.me/923009876543" target="_blank" class="social-btn" title="WhatsApp">wa</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Properties</h5>
+        <ul>
+          <li><a onclick="showPage('buy')">Houses for Sale</a></li>
+          <li><a onclick="showPage('buy')">Apartments</a></li>
+          <li><a onclick="showPage('buy')">Plots & Land</a></li>
+          <li><a onclick="showPage('buy')">Commercial</a></li>
+          <li><a onclick="showPage('buy')">New Projects</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Cities</h5>
+        <ul>
+          <li><a href="#">Islamabad</a></li>
+          <li><a href="#">Lahore</a></li>
+          <li><a href="#">Karachi</a></li>
+          <li><a href="#">Rawalpindi</a></li>
+          <li><a href="#">Peshawar</a></li>
+          <li><a href="#">Multan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a onclick="showPage('contact')">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a onclick="showPage('admin')">Admin Panel</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EstateVault. All rights reserved. Designed for Pakistan's property market.</p>
+      <div class="social-links">
+        <a href="https://facebook.com/estatevaultpk" target="_blank" class="social-btn">f</a>
+        <a href="https://instagram.com/estatevaultpk" target="_blank" class="social-btn">ig</a>
+        <a href="https://youtube.com/@estatevaultpk" target="_blank" class="social-btn">yt</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== BUY PAGE ==================== -->
+<div id="page-buy" class="page fade-in" style="padding-top:68px">
+  <div class="section">
+    <div class="section-header"><div class="section-tag">Browse All</div><h2>Properties for Sale</h2><p>Find your perfect property using advanced filters</p></div>
+    <div class="filters-panel">
+      <div class="filter-group"><label>City</label>
+        <select class="filter-select" id="fCity"><option>All Cities</option><option>Islamabad</option><option>Lahore</option><option>Karachi</option><option>Rawalpindi</option><option>Faisalabad</option><option>Peshawar</option><option>Multan</option></select></div>
+      <div class="filter-group"><label>Type</label>
+        <select class="filter-select" id="fType"><option>All Types</option><option>House</option><option>Apartment</option><option>Plot</option><option>Commercial</option></select></div>
+      <div class="filter-group"><label>Min Price</label><input class="filter-input" id="fMin" type="text" placeholder="e.g. 50 Lac"></div>
+      <div class="filter-group"><label>Max Price</label><input class="filter-input" id="fMax" type="text" placeholder="e.g. 5 Crore"></div>
+      <div class="filter-group"><label>Size</label>
+        <select class="filter-select" id="fSize"><option>Any Size</option><option>5 Marla</option><option>10 Marla</option><option>1 Kanal</option><option>2 Kanal+</option></select></div>
+      <button class="btn-filter" onclick="applyFilters()">Apply Filters</button>
+    </div>
+    <div class="props-grid" id="buyGrid"></div>
+  </div>
+</div>
+
+<!-- ==================== DETAIL PAGE ==================== -->
+<div id="page-detail" class="page fade-in">
+  <div class="detail-hero">
+    <div class="detail-bc"><a onclick="showPage('buy')">Properties</a> / <span id="dc-city">Islamabad</span> / <span id="dc-type">House</span></div>
+    <h1 id="d-title">Property Title</h1>
+    <div class="detail-meta">
+      <div class="detail-price" id="d-price">PKR 0</div>
+      <span class="sbadge s-active">✓ Verified</span>
+      <span style="color:rgba(255,255,255,.55);font-size:.84rem" id="d-loc">📍 Location</span>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div>
+      <div class="detail-gallery">
+        <div class="g-main"><img id="d-img1" src="" alt="main"></div>
+        <div class="g-thumb"><img id="d-img2" src="" alt="t2"></div>
+        <div class="g-thumb"><img id="d-img3" src="" alt="t3"></div>
+      </div>
+      <!-- Video Tour -->
+      <div class="detail-video" id="d-video-wrap" style="display:none">
+        <h3>🎬 Video Tour</h3>
+        <div class="video-wrap"><iframe id="d-video-iframe" src="" allowfullscreen></iframe></div>
+      </div>
+      <div class="dfeat-grid">
+        <div class="dfeat-item"><div class="dfeat-icon">🛏️</div><div class="dfeat-val" id="df-beds">—</div><div class="dfeat-lbl">Bedrooms</div></div>
+        <div class="dfeat-item"><div class="dfeat-icon">🚿</div><div class="dfeat-val" id="df-baths">—</div><div class="dfeat-lbl">Bathrooms</div></div>
+        <div class="dfeat-item"><div class="dfeat-icon">📐</div><div class="dfeat-val" id="df-size">—</div><div class="dfeat-lbl">Size</div></div>
+        <div class="dfeat-item"><div class="dfeat-icon">🏙️</div><div class="dfeat-val" id="df-city">—</div><div class="dfeat-lbl">City</div></div>
+        <div class="dfeat-item"><div class="dfeat-icon">🏷️</div><div class="dfeat-val" id="df-type">—</div><div class="dfeat-lbl">Type</div></div>
+        <div class="dfeat-item"><div class="dfeat-icon">📅</div><div class="dfeat-val">2024</div><div class="dfeat-lbl">Year</div></div>
+      </div>
+      <div style="background:white;border-radius:16px;padding:28px;border:1px solid var(--border);margin-bottom:20px">
+        <h3 style="font-size:1.2rem;color:var(--navy);margin-bottom:14px">Description</h3>
+        <p id="d-desc" style="color:var(--slate);line-height:1.8;font-size:.9rem"></p>
+      </div>
+      <div class="map-ph">
+        <div class="map-pin">📍</div>
+        <div style="font-size:.88rem;color:var(--ls);font-weight:600" id="d-map-text">Location</div>
+        <div style="font-size:.78rem;color:var(--ls);margin-top:4px">Interactive map coming soon</div>
+      </div>
+    </div>
+    <div class="detail-sidebar" style="position:sticky;top:88px;align-self:start">
+      <div class="sidebar-card">
+        <h4>Agent / Seller</h4>
+        <div class="seller-info">
+          <div class="seller-av" id="d-sel-av">AK</div>
+          <div><div class="seller-name" id="d-sel-name">Seller Name</div><div class="seller-role">Verified Agent</div></div>
+        </div>
+        <div class="contact-row">📞 <a id="d-sel-phone" href="#">+92 300 0000000</a></div>
+        <div class="contact-row">✉️ <a id="d-sel-email" href="#"><span class="__cf_email__" data-cfemail="492c24282025092c24282025672a2624">[email&#160;protected]</span></a></div>
+        <div class="contact-row" id="d-sel-fb-row" style="display:none">🔵 <a id="d-sel-fb" href="#" target="_blank">Facebook Profile</a></div>
+        <div class="contact-row" id="d-sel-ig-row" style="display:none">📸 <a id="d-sel-ig" href="#" target="_blank">Instagram Profile</a></div>
+        <div style="margin-top:16px">
+          <button class="btn-primary" onclick="showToast('📞 Calling agent...')">📞 Call Agent</button>
+          <button class="btn-wa" onclick="waContact()">💬 WhatsApp</button>
+          <button class="btn-outline" onclick="showToast('📩 Inquiry sent!')">Send Inquiry</button>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <h4>📍 Location</h4>
+        <div class="map-ph" style="height:160px"><div class="map-pin">📍</div><div style="font-size:.82rem;color:var(--ls)" id="d-map2">Location</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SELL PAGE ==================== -->
+<div id="page-sell" class="page fade-in">
+  <div class="sell-page">
+    <h1>List Your Property</h1>
+    <p style="color:var(--ls);margin-bottom:32px">Fill in the details below to list your property on EstateVault</p>
+    <div class="form-card">
+      <h3>🏠 Basic Information</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Property Title</label><input class="form-input" type="text" placeholder="e.g. Luxury House in DHA Phase 2"></div>
+        <div class="form-group"><label>Property Type</label><select class="form-input"><option>House</option><option>Apartment</option><option>Plot</option><option>Commercial</option></select></div>
+        <div class="form-group"><label>City</label><select class="form-input"><option>Islamabad</option><option>Lahore</option><option>Karachi</option><option>Rawalpindi</option><option>Faisalabad</option><option>Peshawar</option><option>Multan</option></select></div>
+        <div class="form-group"><label>Area / Location</label><input class="form-input" type="text" placeholder="e.g. DHA Phase 2"></div>
+        <div class="form-group"><label>Price (PKR)</label><input class="form-input" type="text" placeholder="e.g. 3.5 Crore"></div>
+        <div class="form-group"><label>Size</label><input class="form-input" type="text" placeholder="e.g. 1 Kanal / 5 Marla"></div>
+        <div class="form-group"><label>Bedrooms</label><select class="form-input"><option>Studio</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></div>
+        <div class="form-group"><label>Bathrooms</label><select class="form-input"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea placeholder="Describe your property in detail..."></textarea></div>
+      <div class="form-group"><label>🎬 YouTube Video URL (Optional)</label><input class="form-input" type="text" placeholder="https://www.youtube.com/watch?v=..."></div>
+    </div>
+    <div class="form-card">
+      <h3>📸 Photos</h3>
+      <div class="upload-zone" onclick="showToast('📁 File picker opened')"><div class="upload-zone-icon">📷</div><p>Drag & drop photos or <span>browse files</span></p><p style="font-size:.78rem;margin-top:6px;color:var(--ls)">JPG, PNG, WEBP — up to 20MB each</p></div>
+    </div>
+    <div class="form-card">
+      <h3>👤 Contact Information</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Your Name</label><input class="form-input" type="text" placeholder="Full Name"></div>
+        <div class="form-group"><label>Phone</label><input class="form-input" type="tel" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="form-group"><label>Email</label><input class="form-input" type="email" placeholder="you@email.com"></div>
+        <div class="form-group"><label>WhatsApp Number</label><input class="form-input" type="tel" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="form-group"><label>Facebook Profile (Optional)</label><input class="form-input" type="text" placeholder="https://facebook.com/yourprofile"></div>
+        <div class="form-group"><label>Instagram (Optional)</label><input class="form-input" type="text" placeholder="@yourusername"></div>
+      </div>
+    </div>
+    <button class="btn-primary" style="max-width:300px" onclick="showToast('✅ Listing submitted for review!')">Submit Listing →</button>
+  </div>
+</div>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div id="page-login" class="page fade-in">
+  <div class="auth-page">
+    <div id="loginCard" class="auth-card">
+      <h2>Welcome Back</h2>
+      <p>Sign in to your EstateVault account</p>
+      <div class="form-group"><label>Email Address</label><input class="form-input" type="email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Password</label><input class="form-input" type="password" placeholder="••••••••"></div>
+      <button class="btn-primary" onclick="doLogin()">Sign In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="toggleAuthForm()">Sign Up Free</a></div>
+    </div>
+    <div id="signupCard" class="auth-card" style="display:none">
+      <h2>Create Account</h2>
+      <p>Join EstateVault — free forever</p>
+      <div class="form-grid">
+        <div class="form-group"><label>First Name</label><input class="form-input" type="text" placeholder="Ali"></div>
+        <div class="form-group"><label>Last Name</label><input class="form-input" type="text" placeholder="Khan"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Phone</label><input class="form-input" type="tel" placeholder="+92 3XX XXXXXXX"></div>
+      <div class="form-group"><label>Password</label><input class="form-input" type="password" placeholder="Min 8 characters"></div>
+      <button class="btn-primary" onclick="doSignup()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="toggleAuthForm()">Sign In</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="page-dashboard" class="page fade-in">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:white;">Estate<span style="color:#7AADFF;">Vault</span></div>
+        <p>My Account</p>
+      </div>
+      <ul class="sb-menu">
+        <li class="sb-section">Dashboard</li>
+        <li><a class="active"><span class="menu-icon">📊</span> Overview</a></li>
+        <li><a onclick="showPage('sell')"><span class="menu-icon">🏠</span> My Listings</a></li>
+        <li><a onclick="showToast('Saved properties')"><span class="menu-icon">❤️</span> Saved Properties</a></li>
+        <li><a onclick="showToast('Messages')"><span class="menu-icon">💬</span> Messages</a></li>
+        <li class="sb-section">Account</li>
+        <li><a onclick="showToast('Profile settings')"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li><a onclick="showPage('home')"><span class="menu-icon">🚪</span> Logout</a></li>
+      </ul>
+    </aside>
+    <main class="dash-main">
+      <div class="dash-hdr"><div><h2>Welcome Back 👋</h2><p style="color:var(--ls);font-size:.88rem;margin-top:4px">Manage your listings and saved properties</p></div></div>
+      <div class="dash-stats">
+        <div class="dsc"><div class="stat-icon">🏠</div><div class="stat-num">3</div><div class="stat-label">My Listings</div><div class="stat-change">↑ 1 this month</div></div>
+        <div class="dsc"><div class="stat-icon">👁️</div><div class="stat-num">842</div><div class="stat-label">Total Views</div><div class="stat-change">↑ 120 this week</div></div>
+        <div class="dsc"><div class="stat-icon">❤️</div><div class="stat-num">12</div><div class="stat-label">Saved Properties</div><div class="stat-change">↑ 3 this week</div></div>
+        <div class="dsc"><div class="stat-icon">💬</div><div class="stat-num">7</div><div class="stat-label">New Inquiries</div><div class="stat-change" style="color:var(--warn)">Needs response</div></div>
+      </div>
+      <div class="dash-section"><h3>My Active Listings <a onclick="showPage('sell')">+ Add New</a></h3>
+        <div id="userListings"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ==================== ADMIN PANEL ==================== -->
+<div id="page-admin" class="page fade-in">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:white;">Estate<span style="color:#7AADFF;">Vault</span></div>
+        <p style="color:rgba(255,122,0,.8);font-size:.72rem;font-weight:700;">⚙️ ADMIN PANEL</p>
+      </div>
+      <ul class="sb-menu">
+        <li class="sb-section">Admin</li>
+        <li><a class="active" onclick="showAdminTab('dashboard')"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li><a onclick="showAdminTab('properties')"><span class="menu-icon">🏠</span> All Properties</a></li>
+        <li><a onclick="showAdminTab('plots')"><span class="menu-icon">🌿</span> Plots</a></li>
+        <li><a onclick="showAdminTab('apartments')"><span class="menu-icon">🏢</span> Apartments</a></li>
+        <li><a onclick="showAdminTab('commercial')"><span class="menu-icon">🏗️</span> Commercial</a></li>
+        <li><a onclick="showAdminTab('pending')"><span class="menu-icon">⏳</span> Pending Review <span style="background:var(--warn);color:white;font-size:.66rem;padding:2px 7px;border-radius:100px;margin-left:auto;">4</span></a></li>
+        <li><a onclick="showAdminTab('users')"><span class="menu-icon">👥</span> Users</a></li>
+        <li><a onclick="showAdminTab('contacts')"><span class="menu-icon">📩</span> Contact Messages</a></li>
+        <li class="sb-section">Settings</li>
+        <li><a onclick="showToast('Site settings')"><span class="menu-icon">⚙️</span> Site Settings</a></li>
+        <li><a onclick="adminLogout()"><span class="menu-icon">🚪</span> Logout & Back to Site</a></li>
+      </ul>
+    </aside>
+    <main class="dash-main">
+      <div class="dash-hdr"><div><h2>Admin Panel <span class="demo-tag">DEMO</span></h2><p style="color:var(--ls);font-size:.88rem;margin-top:4px">Full control over listings, users, plots, apartments & contacts</p></div>
+        <button class="btn-filter" onclick="openAddPropertyModal()">+ Add Property</button>
+      </div>
+      <!-- DASHBOARD STATS -->
+      <div id="admin-panel-dashboard" class="admin-panel show">
+        <div class="dash-stats">
+          <div class="dsc"><div class="stat-icon">🏠</div><div class="stat-num">1,847</div><div class="stat-label">Total Listings</div><div class="stat-change">↑ 84 this week</div></div>
+          <div class="dsc"><div class="stat-icon">🌿</div><div class="stat-num">412</div><div class="stat-label">Plots Listed</div><div class="stat-change">↑ 22 this week</div></div>
+          <div class="dsc"><div class="stat-icon">🏢</div><div class="stat-num">334</div><div class="stat-label">Apartments</div><div class="stat-change">↑ 18 this week</div></div>
+          <div class="dsc"><div class="stat-icon">👥</div><div class="stat-num">4,231</div><div class="stat-label">Registered Users</div><div class="stat-change">↑ 180 this week</div></div>
+          <div class="dsc"><div class="stat-icon">⏳</div><div class="stat-num">4</div><div class="stat-label">Pending Approval</div><div class="stat-change" style="color:var(--warn)">Needs attention</div></div>
+          <div class="dsc"><div class="stat-icon">💰</div><div class="stat-num">PKR 62B</div><div class="stat-label">Total Listed Value</div><div class="stat-change">↑ 11% this month</div></div>
+        </div>
+        <!-- RECENT ACTIVITY TABLE -->
+        <div class="dash-section"><h3>Recent Listings</h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminRecentTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ALL PROPERTIES -->
+      <div id="admin-panel-properties" class="admin-panel">
+        <div class="dash-section"><h3>All Property Listings <a href="#" onclick="openAddPropertyModal()">+ Add New</a></h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminAllProps"></table></div>
+        </div>
+      </div>
+
+      <!-- PLOTS -->
+      <div id="admin-panel-plots" class="admin-panel">
+        <div class="dash-section"><h3>Plots & Land <a href="#" onclick="openAddPropertyModal('plot')">+ Add Plot</a></h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminPlots"></table></div>
+        </div>
+      </div>
+
+      <!-- APARTMENTS -->
+      <div id="admin-panel-apartments" class="admin-panel">
+        <div class="dash-section"><h3>Apartments <a href="#" onclick="openAddPropertyModal('apartment')">+ Add Apartment</a></h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminApts"></table></div>
+        </div>
+      </div>
+
+      <!-- COMMERCIAL -->
+      <div id="admin-panel-commercial" class="admin-panel">
+        <div class="dash-section"><h3>Commercial Properties <a href="#" onclick="openAddPropertyModal('commercial')">+ Add Commercial</a></h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminCommercial"></table></div>
+        </div>
+      </div>
+
+      <!-- PENDING -->
+      <div id="admin-panel-pending" class="admin-panel">
+        <div class="dash-section"><h3>Pending Review</h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminPending"></table></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div id="admin-panel-users" class="admin-panel">
+        <div class="dash-section"><h3>Registered Users</h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminUsers"></table></div>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div id="admin-panel-contacts" class="admin-panel">
+        <div class="dash-section"><h3>Contact Messages</h3>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminContacts"></table></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ==================== CONTACT PAGE ==================== -->
+<div id="page-contact" class="page fade-in">
+  <div class="contact-page">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-tag" style="margin-bottom:12px">Get in Touch</div>
+        <h2>Let's Talk Property</h2>
+        <p>Have questions about a listing? Need advice on buying or selling? Our team is ready to help you across Pakistan.</p>
+        <div class="contact-item"><div class="contact-icon">📍</div><div><h4>Headquarters</h4><p>Blue Area, Islamabad, Pakistan</p></div></div>
+        <div class="contact-item"><div class="contact-icon">📞</div><div><h4>Phone</h4><p>+92 51 1234567<br>+92 300 9876543</p></div></div>
+        <div class="contact-item"><div class="contact-icon">✉️</div><div><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection#85ecebe3eac5e0f6f1e4f1e0f3e4f0e9f1abf5ee"><span class="__cf_email__" data-cfemail="93fafdf5fcd3f6e0e7f2e7f6e5f2e6ffe7bde3f8">[email&#160;protected]</span></a><br><a href="/cdn-cgi/l/email-protection#0e7d7b7e7e617c7a4e6b7d7a6f7a6b786f7b627a207e65"><span class="__cf_email__" data-cfemail="b2c1c7c2c2ddc0c6f2d7c1c6d3c6d7c4d3c7dec69cc2d9">[email&#160;protected]</span></a></p></div></div>
+        <div class="contact-item"><div class="contact-icon">💬</div><div><h4>WhatsApp</h4><p><a href="https://wa.me/923009876543" target="_blank">+92 300 9876543</a></p></div></div>
+        <div class="contact-item"><div class="contact-icon">⏰</div><div><h4>Working Hours</h4><p>Mon–Sat: 9:00 AM – 7:00 PM<br>Sunday: 10:00 AM – 4:00 PM</p></div></div>
+        <div style="margin-top:10px">
+          <h4 style="font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:14px">Follow Us</h4>
+          <div class="contact-social">
+            <a href="https://facebook.com/estatevaultpk" target="_blank" class="csoc-btn fb">📘 Facebook</a>
+            <a href="https://instagram.com/estatevaultpk" target="_blank" class="csoc-btn ig">📸 Instagram</a>
+            <a href="https://youtube.com/@estatevaultpk" target="_blank" class="csoc-btn yt">▶️ YouTube</a>
+            <a href="https://wa.me/923009876543" target="_blank" class="csoc-btn wa">💬 WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <h3 style="font-size:1.4rem;color:var(--navy);margin-bottom:22px">Send Us a Message</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>First Name</label><input class="form-input" type="text" placeholder="Ali"></div>
+          <div class="form-group"><label>Last Name</label><input class="form-input" type="text" placeholder="Khan"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input class="form-input" type="email" placeholder="ali@example.com"></div>
+        <div class="form-group"><label>Phone</label><input class="form-input" type="tel" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="form-group"><label>Subject</label>
+          <select class="form-input"><option>General Inquiry</option><option>Property Question</option><option>List My Property</option><option>Technical Support</option><option>Partnership</option></select></div>
+        <div class="form-group"><label>Message</label><textarea class="form-input" style="min-height:110px;resize:vertical" placeholder="How can we help you?"></textarea></div>
+        <button class="btn-primary" onclick="submitContactForm()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg">Done</span></div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h3 id="modalTitle">Confirm Delete</h3>
+    <p id="modalMsg">Are you sure you want to delete this property? This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn primary" id="modalConfirmBtn" style="background:var(--danger)">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="vmodal" id="vmodal">
+  <div class="vmodal-inner">
+    <iframe id="vmodal-iframe" src="" allowfullscreen></iframe>
+    <button class="vmodal-close" onclick="closeVideo()">✕</button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="modal-overlay" id="adminLoginModal" style="z-index:5000">
+  <div class="modal-box" style="max-width:420px;padding:40px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:2.5rem;margin-bottom:8px">🔐</div>
+      <h3 style="font-size:1.5rem">Admin Access</h3>
+      <p style="color:var(--ls);font-size:.88rem;margin-top:6px">Enter your admin credentials to continue</p>
+    </div>
+    <div class="form-group"><label>Admin Email</label><input class="form-input" type="email" id="adminLoginEmail" placeholder="admin@estatevault.pk"></div>
+    <div class="form-group"><label>Password</label><input class="form-input" type="password" id="adminLoginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+    <div id="adminLoginErr" style="color:var(--danger);font-size:.83rem;margin-bottom:12px;display:none">❌ Invalid email or password.</div>
+    <div class="modal-actions" style="justify-content:space-between;align-items:center">
+      <button class="modal-btn secondary" onclick="closeAdminLogin()">Cancel</button>
+      <button class="modal-btn primary" onclick="doAdminLogin()">Login to Admin →</button>
+    </div>
+    <p style="text-align:center;font-size:.76rem;color:var(--ls);margin-top:16px">Default: admin@estatevault.pk / admin123</p>
+  </div>
+</div>
+
+<!-- ADD / EDIT PROPERTY MODAL -->
+<div class="modal-overlay" id="propModal" style="z-index:4000;align-items:flex-start;padding-top:60px;overflow-y:auto">
+  <div class="modal-box" style="max-width:720px;width:95%;padding:36px;margin-bottom:40px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h3 id="propModalTitle" style="font-size:1.4rem">Add New Property</h3>
+      <button onclick="closePropModal()" style="background:var(--canvas);border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.85rem;font-weight:600">✕ Close</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="propFormGrid">
+      <div class="form-group" style="grid-column:1/-1"><label>Property Title *</label><input class="form-input" id="pf-title" type="text" placeholder="e.g. Luxury House — DHA Phase 2"></div>
+      <div class="form-group"><label>Type *</label><select class="form-input" id="pf-type"><option value="house">House</option><option value="apartment">Apartment</option><option value="plot">Plot</option><option value="commercial">Commercial</option></select></div>
+      <div class="form-group"><label>City *</label><select class="form-input" id="pf-city"><option>Islamabad</option><option>Lahore</option><option>Karachi</option><option>Rawalpindi</option><option>Faisalabad</option><option>Peshawar</option><option>Multan</option><option>Quetta</option><option>Sialkot</option></select></div>
+      <div class="form-group"><label>Area / Location *</label><input class="form-input" id="pf-loc" type="text" placeholder="e.g. DHA Phase 2, Islamabad"></div>
+      <div class="form-group"><label>Price (PKR) *</label><input class="form-input" id="pf-price" type="text" placeholder="e.g. PKR 3.5 Crore"></div>
+      <div class="form-group"><label>Size *</label><input class="form-input" id="pf-size" type="text" placeholder="e.g. 1 Kanal / 5 Marla / 1200 sqft"></div>
+      <div class="form-group"><label>Bedrooms</label><select class="form-input" id="pf-beds"><option value="0">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6+</option></select></div>
+      <div class="form-group"><label>Bathrooms</label><select class="form-input" id="pf-baths"><option value="0">N/A</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
+      <div class="form-group"><label>Badge Label</label><input class="form-input" id="pf-badge" type="text" placeholder="e.g. For Sale, Hot Deal, Investment"></div>
+      <div class="form-group"><label>Badge Style</label><select class="form-input" id="pf-badgeClass"><option value="sale">Green (For Sale)</option><option value="hot">Orange (Hot Deal)</option><option value="">Blue (Default)</option><option value="rent">Purple (Rent)</option></select></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Main Image URL *</label><input class="form-input" id="pf-img" type="text" placeholder="https://images.unsplash.com/..."></div>
+      <div class="form-group"><label>Image 2 URL</label><input class="form-input" id="pf-img2" type="text" placeholder="https://..."></div>
+      <div class="form-group"><label>Image 3 URL</label><input class="form-input" id="pf-img3" type="text" placeholder="https://..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label>YouTube Video URL (optional)</label><input class="form-input" id="pf-video" type="text" placeholder="https://www.youtube.com/embed/VIDEO_ID"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Description *</label><textarea class="form-input" id="pf-desc" style="min-height:100px;resize:vertical" placeholder="Describe the property in detail..."></textarea></div>
+      <div style="grid-column:1/-1;border-top:1px solid var(--border);padding-top:18px;margin-top:4px"><p style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:14px">👤 Seller / Agent Contact</p></div>
+      <div class="form-group"><label>Seller Name *</label><input class="form-input" id="pf-seller" type="text" placeholder="e.g. Adnan Khan"></div>
+      <div class="form-group"><label>Phone *</label><input class="form-input" id="pf-phone" type="tel" placeholder="+92 300 1234567"></div>
+      <div class="form-group"><label>Email *</label><input class="form-input" id="pf-email" type="email" placeholder="seller@email.com"></div>
+      <div class="form-group"><label>Facebook URL</label><input class="form-input" id="pf-fb" type="text" placeholder="https://facebook.com/profile"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Instagram Handle</label><input class="form-input" id="pf-ig" type="text" placeholder="@username"></div>
+    </div>
+    <div id="propFormErr" style="color:var(--danger);font-size:.83rem;margin-top:10px;display:none"></div>
+    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+      <button class="modal-btn secondary" onclick="closePropModal()">Cancel</button>
+      <button class="modal-btn primary" id="propSaveBtn" onclick="saveProperty()">💾 Save Property</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== ADMIN CREDENTIALS ====================
+const ADMIN_EMAIL = 'admin@estatevault.pk';
+const ADMIN_PASS  = 'admin123';
+let adminLoggedIn = false;
+
+// ==================== PROPERTIES DATA ====================
+let properties = [
+  {id:0,title:"Luxury House — DHA Phase 2",city:"Islamabad",type:"house",price:"PKR 3.5 Crore",loc:"DHA Phase 2, Islamabad",beds:5,baths:4,size:"1 Kanal",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600",img2:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400",img3:"https://images.unsplash.com/photo-1600210492493-0946911123ea?w=400",video:"https://www.youtube.com/embed/dQw4w9WgXcQ",seller:"Adnan Khan",phone:"+92 300 1234567",email:"adnan@gmail.com",fb:"https://facebook.com/adnankhan",ig:"@adnankhan_pk",desc:"Stunning luxury residence in DHA Phase 2 featuring Italian marble floors, modern open-plan kitchen, lush manicured garden, and a dedicated home office. Comes with 2-car garage, backup generator, solar panels, and 24/7 community security. Perfect for a growing family."},
+  {id:1,title:"Modern Apartment — Gulberg III",city:"Lahore",type:"apartment",price:"PKR 85 Lac",loc:"Gulberg III, Lahore",beds:3,baths:2,size:"1,200 sqft",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600",img2:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400",img3:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",video:"https://www.youtube.com/embed/ysz5S6PUM-U",seller:"Sara Rehman",phone:"+92 321 9876543",email:"sara@email.com",fb:"",ig:"@sara_rehman_homes",desc:"Contemporary apartment in the heart of Gulberg with stunning city skyline views. Open-plan living area, premium fittings, fully equipped gym, rooftop lounge, and dedicated parking. Walk to Liberty Market and top restaurants."},
+  {id:2,title:"Farmhouse — Chak Shahzad",city:"Islamabad",type:"house",price:"PKR 8 Crore",loc:"Chak Shahzad, Islamabad",beds:6,baths:5,size:"4 Kanal",badge:"Hot Deal",badgeClass:"hot",img:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600",img2:"https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=400",img3:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",video:"https://www.youtube.com/embed/LXb3EKWsInQ",seller:"Muhammad Bilal",phone:"+92 333 4567890",email:"bilal@mail.com",fb:"https://facebook.com/mbilal.properties",ig:"",desc:"Spectacular 4-Kanal farmhouse on the outskirts of Islamabad. Features an event lawn for 500+ guests, private swimming pool, fruit orchard, stables, and 6 luxury bedrooms. Perfect for family living or event rental income."},
+  {id:3,title:"Commercial Plaza — Blue Area",city:"Islamabad",type:"commercial",price:"PKR 12 Crore",loc:"Blue Area, Islamabad",beds:0,baths:4,size:"8 Marla",badge:"Investment",badgeClass:"",img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600",img2:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=400",img3:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400",video:"",seller:"Hassan Ali",phone:"+92 300 7654321",email:"hassan@business.com",fb:"https://facebook.com/hassan.ali.realestate",ig:"@hassan_ali_pk",desc:"Prime G+4 commercial building in the heart of Blue Area, Islamabad's premier business district. Features dedicated basement parking, 100% power backup, fiber internet, and CCTV. Currently generating rental income of PKR 8 Lac/month."},
+  {id:4,title:"Corner Plot — Bahria Phase 7",city:"Rawalpindi",type:"plot",price:"PKR 55 Lac",loc:"Bahria Town Phase 7, Rawalpindi",beds:0,baths:0,size:"5 Marla",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600",img2:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400",img3:"https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=400",video:"",seller:"Fatima Zahra",phone:"+92 322 1234567",email:"fatima@mail.com",fb:"",ig:"",desc:"Prime east-open 5-Marla corner plot in Bahria Town Phase 7. All utilities available including gas, electricity, water. Ideal for immediate construction. Gated community with parks, mosque, school and hospital nearby. Possession available."},
+  {id:5,title:"Luxury Apartment — Zamzama",city:"Karachi",type:"apartment",price:"PKR 2.2 Crore",loc:"Zamzama, Karachi",beds:4,baths:3,size:"2,800 sqft",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600",img2:"https://images.unsplash.com/photo-1600210492493-0946911123ea?w=400",img3:"https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=400",video:"https://www.youtube.com/embed/tgbNymZ7vqY",seller:"Zara Sheikh",phone:"+92 312 9876543",email:"zara@mail.com",fb:"https://facebook.com/zara.sheikh.homes",ig:"@zara_sheikh_karachi",desc:"Ultra-luxury sea-facing apartment in Zamzama with panoramic views of the Arabian Sea. Chef's kitchen, home automation, Italian marble, private gym, and 24/7 concierge. Pakistan's most prestigious Karachi address."},
+  {id:6,title:"House — F-10, Islamabad",city:"Islamabad",type:"house",price:"PKR 4.8 Crore",loc:"F-10, Islamabad",beds:4,baths:3,size:"10 Marla",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600",img2:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400",img3:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=400",video:"https://www.youtube.com/embed/ysz5S6PUM-U",seller:"Tariq Mehmood",phone:"+92 300 5555555",email:"tariq@mail.com",fb:"https://facebook.com/tariqmehmood.isb",ig:"",desc:"Beautiful 10-Marla house in the prestigious F-10 sector of Islamabad. Well-maintained with modern kitchen, wooden flooring, and a serene backyard. Walking distance from F-10 Markaz, minutes from Blue Area."},
+  {id:7,title:"Apartment — Bahria Heights Karachi",city:"Karachi",type:"apartment",price:"PKR 1.4 Crore",loc:"Bahria Town Karachi",beds:3,baths:2,size:"1,600 sqft",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600",img2:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400",img3:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=400",video:"https://www.youtube.com/embed/dQw4w9WgXcQ",seller:"Nadia Iqbal",phone:"+92 315 7777777",email:"nadia@mail.com",fb:"",ig:"@nadia_iqbal_khi",desc:"Modern 3-bedroom apartment in Bahria Heights with stunning views of Grand Jamia Mosque. Club access, swimming pool, 24/7 security, and dedicated parking. Ideal as first home or investment."},
+  {id:8,title:"Plot — DHA Valley Islamabad",city:"Islamabad",type:"plot",price:"PKR 38 Lac",loc:"DHA Valley, Islamabad",beds:0,baths:0,size:"5 Marla",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600",img2:"https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=400",img3:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400",video:"",seller:"Asif Mahmood",phone:"+92 333 2222222",email:"asif@mail.com",fb:"https://facebook.com/asif.mahmood.plots",ig:"",desc:"Residential plot in DHA Valley — Islamabad's fastest growing community. All development charges paid, possession available. Ideal for self-construction or resale investment. File transfer in 2 weeks."},
+  {id:9,title:"Commercial Shop — Gulberg Lahore",city:"Lahore",type:"commercial",price:"PKR 2.5 Crore",loc:"Gulberg II, Lahore",beds:0,baths:1,size:"4 Marla",badge:"Investment",badgeClass:"",img:"https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600",img2:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=400",img3:"https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=400",video:"",seller:"Rizwan Ahmed",phone:"+92 322 8888888",email:"rizwan@mail.com",fb:"https://facebook.com/rizwan.ahmed.commercial",ig:"@rizwan_commercial",desc:"Prime ground floor commercial shop in Gulberg II, Lahore. Currently occupied by a reputable brand. Monthly rental income: PKR 2.2 Lac. Excellent ROI — 10.5% annual yield."},
+  {id:10,title:"House — Bahria Town Phase 8",city:"Rawalpindi",type:"house",price:"PKR 1.9 Crore",loc:"Bahria Town Phase 8, Rawalpindi",beds:5,baths:4,size:"10 Marla",badge:"Hot Deal",badgeClass:"hot",img:"https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600",img2:"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400",img3:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400",video:"https://www.youtube.com/embed/LXb3EKWsInQ",seller:"Imran Butt",phone:"+92 311 3333333",email:"imran@mail.com",fb:"",ig:"@imran_butt_rwp",desc:"Spacious 10-Marla house in Bahria Town Phase 8 near Commercial Broadway. Features 5 bedrooms, home theatre, lawn, solar energy system and backup generator."},
+  {id:11,title:"Apartment — Faisalabad City Tower",city:"Faisalabad",type:"apartment",price:"PKR 75 Lac",loc:"D Ground, Faisalabad",beds:2,baths:2,size:"950 sqft",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600",img2:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400",img3:"https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=400",video:"",seller:"Ayesha Noon",phone:"+92 300 4444444",email:"ayesha@mail.com",fb:"https://facebook.com/ayesha.noon.fsd",ig:"",desc:"Modern 2-bed apartment in the heart of Faisalabad in a brand new high-rise. Features imported flooring, modular kitchen, backup generator, and rooftop garden. Easy installment plan available over 3 years."},
+  {id:12,title:"Plot — Hayatabad Phase 6 Peshawar",city:"Peshawar",type:"plot",price:"PKR 95 Lac",loc:"Hayatabad Phase 6, Peshawar",beds:0,baths:0,size:"10 Marla",badge:"For Sale",badgeClass:"sale",img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600",img2:"https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=400",img3:"https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=400",video:"",seller:"Bilal Afridi",phone:"+92 333 6666666",email:"bilal.afridi@mail.com",fb:"",ig:"",desc:"Residential plot in Hayatabad Phase 6 — Peshawar's most sought-after development. On main road, all utilities available. Perfect for home construction or commercial development with good resale value."},
+];
+let nextId = 13;
+let editingId = null;
+let deleteTargetId = null;
+
+// ==================== RENDER CARD ====================
+function renderCard(p){
+  const feats = p.type!=='plot'&&p.type!=='commercial'
+    ? `<div class="prop-feat">🛏️ ${p.beds} Beds</div><div class="prop-feat">🚿 ${p.baths} Baths</div>`
+    : `<div class="prop-feat">📐 ${p.size}</div>`;
+  const vidIcon = p.video ? `<div class="prop-vid-icon" onclick="event.stopPropagation();playVideo('${p.video}')">▶</div>` : '';
+  return `<div class="prop-card" onclick="openDetail(${p.id})">
+    <div class="prop-img-wrap">
+      <img src="${p.img||'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600'">
+      ${p.badge?`<div class="prop-badge ${p.badgeClass}">${p.badge}</div>`:''}
+      <div class="prop-fav" onclick="event.stopPropagation();toggleFav(this)">♡</div>
+      ${vidIcon}
+    </div>
+    <div class="prop-info">
+      <div class="prop-price">${p.price}</div>
+      <div class="prop-title">${p.title}</div>
+      <div class="prop-loc">📍 ${p.loc}</div>
+      <div class="prop-feats">${feats}<div class="prop-feat">📐 ${p.size}</div></div>
+    </div>
+  </div>`;
+}
+
+function toggleFav(el){
+  const on = el.innerHTML==='❤️';
+  el.innerHTML = on ? '♡' : '❤️';
+  showToast(on ? 'Removed from favourites' : 'Added to favourites ❤️');
+}
+
+function populateGrid(gridId, filter){
+  const el = document.getElementById(gridId); if(!el) return;
+  const data = filter&&filter!=='all' ? properties.filter(p=>p.type===filter) : properties;
+  el.innerHTML = data.map(renderCard).join('');
+}
+
+// ==================== NAV ====================
+function showPage(name){
+  // Guard admin page — must be logged in
+  if(name==='admin' && !adminLoggedIn){ showAdminLoginModal(); return; }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg = document.getElementById('page-'+name);
+  if(pg){ pg.classList.add('active'); pg.classList.remove('fade-in'); void pg.offsetWidth; pg.classList.add('fade-in'); }
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const nav = document.getElementById('nav-'+name); if(nav) nav.classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('navLinks').classList.remove('open');
+  if(name==='home'||name==='buy') populateGrid(name==='home'?'featuredGrid':'buyGrid','all');
+  if(name==='dashboard') renderUserListings();
+  if(name==='admin'){ renderAdminTables(); showAdminTab('dashboard'); }
+}
+
+function toggleNav(){ document.getElementById('navLinks').classList.toggle('open'); }
+
+// ==================== FILTERS ====================
+function filterCat(el, cat){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active'); populateGrid('featuredGrid', cat);
+}
+function applyFilters(){ populateGrid('buyGrid','all'); showToast('🔍 Filters applied!'); }
+function doSearch(){ showPage('buy'); setTimeout(()=>{ populateGrid('buyGrid','all'); showToast('🔍 Showing results...'); },100); }
+
+// ==================== DETAIL ====================
+function openDetail(id){
+  const p = properties.find(x=>x.id===id); if(!p) return;
+  document.getElementById('d-title').textContent = p.title;
+  document.getElementById('d-price').textContent = p.price;
+  document.getElementById('d-loc').textContent = '📍 '+p.loc;
+  document.getElementById('dc-city').textContent = p.city;
+  document.getElementById('dc-type').textContent = p.type.charAt(0).toUpperCase()+p.type.slice(1);
+  document.getElementById('d-img1').src = p.img;
+  document.getElementById('d-img2').src = p.img2||p.img;
+  document.getElementById('d-img3').src = p.img3||p.img;
+  document.getElementById('df-beds').textContent = p.beds||'—';
+  document.getElementById('df-baths').textContent = p.baths||'—';
+  document.getElementById('df-size').textContent = p.size;
+  document.getElementById('df-city').textContent = p.city;
+  document.getElementById('df-type').textContent = p.type.charAt(0).toUpperCase()+p.type.slice(1);
+  document.getElementById('d-desc').textContent = p.desc;
+  document.getElementById('d-sel-name').textContent = p.seller;
+  document.getElementById('d-sel-av').textContent = p.seller.split(' ').map(w=>w[0]).join('');
+  document.getElementById('d-sel-phone').textContent = p.phone;
+  document.getElementById('d-sel-phone').href = 'tel:'+p.phone.replace(/\s+/g,'');
+  document.getElementById('d-sel-email').textContent = p.email;
+  document.getElementById('d-sel-email').href = 'mailto:'+p.email;
+  document.getElementById('d-map-text').textContent = p.loc;
+  document.getElementById('d-map2').textContent = p.loc;
+  if(p.fb){ document.getElementById('d-sel-fb').href=p.fb; document.getElementById('d-sel-fb-row').style.display='flex'; }
+  else document.getElementById('d-sel-fb-row').style.display='none';
+  if(p.ig){ document.getElementById('d-sel-ig').textContent=p.ig; document.getElementById('d-sel-ig-row').style.display='flex'; }
+  else document.getElementById('d-sel-ig-row').style.display='none';
+  if(p.video){ document.getElementById('d-video-iframe').src=p.video+'?rel=0'; document.getElementById('d-video-wrap').style.display='block'; }
+  else{ document.getElementById('d-video-wrap').style.display='none'; document.getElementById('d-video-iframe').src=''; }
+  showPage('detail');
+}
+
+function waContact(){
+  const phone = document.getElementById('d-sel-phone').textContent.replace(/\s+/g,'').replace('+','');
+  const name = document.getElementById('d-title').textContent;
+  window.open('https://wa.me/'+phone+'?text=Hi, I am interested in: '+encodeURIComponent(name),'_blank');
+}
+
+// ==================== VIDEO ====================
+function playVideo(url){
+  document.getElementById('vmodal-iframe').src = url+'?autoplay=1';
+  document.getElementById('vmodal').classList.add('show');
+}
+function closeVideo(){
+  document.getElementById('vmodal').classList.remove('show');
+  document.getElementById('vmodal-iframe').src = '';
+}
+
+// ==================== AUTH ====================
+function toggleAuthForm(){
+  const l=document.getElementById('loginCard'), s=document.getElementById('signupCard');
+  if(l.style.display==='none'){ l.style.display='block'; s.style.display='none'; }
+  else{ l.style.display='none'; s.style.display='block'; }
+}
+function doLogin(){ showToast('✅ Login successful! Welcome back.'); setTimeout(()=>showPage('dashboard'),800); }
+function doSignup(){ showToast('🎉 Account created! Welcome to EstateVault.'); setTimeout(()=>showPage('dashboard'),800); }
+
+// ==================== CONTACT ====================
+function submitContactForm(){ showToast("✅ Message sent! We'll reply within 24 hours."); }
+
+// ==================== ADMIN LOGIN ====================
+function showAdminLoginModal(){
+  document.getElementById('adminLoginEmail').value = '';
+  document.getElementById('adminLoginPass').value = '';
+  document.getElementById('adminLoginErr').style.display = 'none';
+  document.getElementById('adminLoginModal').classList.add('show');
+}
+function closeAdminLogin(){
+  document.getElementById('adminLoginModal').classList.remove('show');
+}
+function doAdminLogin(){
+  const email = document.getElementById('adminLoginEmail').value.trim();
+  const pass  = document.getElementById('adminLoginPass').value;
+  const err   = document.getElementById('adminLoginErr');
+  if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
+    adminLoggedIn = true;
+    closeAdminLogin();
+    showToast('✅ Admin login successful!');
+    // Actually navigate to admin now
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const pg = document.getElementById('page-admin');
+    if(pg){ pg.classList.add('active'); pg.classList.remove('fade-in'); void pg.offsetWidth; pg.classList.add('fade-in'); }
+    window.scrollTo(0,0);
+    renderAdminTables(); showAdminTab('dashboard');
+  } else {
+    err.style.display = 'block';
+  }
+}
+function adminLogout(){
+  adminLoggedIn = false;
+  showPage('home');
+  showToast('👋 Logged out of admin panel.');
+}
+
+// ==================== ADD / EDIT PROPERTY ====================
+function openAddPropertyModal(defaultType){
+  editingId = null;
+  document.getElementById('propModalTitle').textContent = '➕ Add New Property';
+  document.getElementById('propSaveBtn').textContent = '💾 Save Property';
+  // Clear all fields
+  ['pf-title','pf-loc','pf-price','pf-size','pf-img','pf-img2','pf-img3','pf-video','pf-desc','pf-seller','pf-phone','pf-email','pf-fb','pf-ig'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('pf-beds').value = '0';
+  document.getElementById('pf-baths').value = '0';
+  document.getElementById('pf-badge').value = 'For Sale';
+  document.getElementById('pf-badgeClass').value = 'sale';
+  if(defaultType){ document.getElementById('pf-type').value = defaultType; }
+  else { document.getElementById('pf-type').value = 'house'; }
+  document.getElementById('propFormErr').style.display = 'none';
+  document.getElementById('propModal').classList.add('show');
+}
+
+function openEditPropertyModal(id){
+  const p = properties.find(x=>x.id===id); if(!p) return;
+  editingId = id;
+  document.getElementById('propModalTitle').textContent = '✏️ Edit Property';
+  document.getElementById('propSaveBtn').textContent = '💾 Update Property';
+  document.getElementById('pf-title').value   = p.title;
+  document.getElementById('pf-type').value    = p.type;
+  document.getElementById('pf-city').value    = p.city;
+  document.getElementById('pf-loc').value     = p.loc;
+  document.getElementById('pf-price').value   = p.price;
+  document.getElementById('pf-size').value    = p.size;
+  document.getElementById('pf-beds').value    = p.beds||'0';
+  document.getElementById('pf-baths').value   = p.baths||'0';
+  document.getElementById('pf-badge').value   = p.badge||'';
+  document.getElementById('pf-badgeClass').value = p.badgeClass||'';
+  document.getElementById('pf-img').value     = p.img||'';
+  document.getElementById('pf-img2').value    = p.img2||'';
+  document.getElementById('pf-img3').value    = p.img3||'';
+  document.getElementById('pf-video').value   = p.video||'';
+  document.getElementById('pf-desc').value    = p.desc||'';
+  document.getElementById('pf-seller').value  = p.seller||'';
+  document.getElementById('pf-phone').value   = p.phone||'';
+  document.getElementById('pf-email').value   = p.email||'';
+  document.getElementById('pf-fb').value      = p.fb||'';
+  document.getElementById('pf-ig').value      = p.ig||'';
+  document.getElementById('propFormErr').style.display = 'none';
+  document.getElementById('propModal').classList.add('show');
+}
+
+function closePropModal(){
+  document.getElementById('propModal').classList.remove('show');
+  editingId = null;
+}
+
+function saveProperty(){
+  const title  = document.getElementById('pf-title').value.trim();
+  const type   = document.getElementById('pf-type').value;
+  const city   = document.getElementById('pf-city').value;
+  const loc    = document.getElementById('pf-loc').value.trim();
+  const price  = document.getElementById('pf-price').value.trim();
+  const size   = document.getElementById('pf-size').value.trim();
+  const beds   = parseInt(document.getElementById('pf-beds').value)||0;
+  const baths  = parseInt(document.getElementById('pf-baths').value)||0;
+  const badge  = document.getElementById('pf-badge').value.trim();
+  const badgeClass = document.getElementById('pf-badgeClass').value;
+  const img    = document.getElementById('pf-img').value.trim();
+  const img2   = document.getElementById('pf-img2').value.trim();
+  const img3   = document.getElementById('pf-img3').value.trim();
+  const video  = document.getElementById('pf-video').value.trim();
+  const desc   = document.getElementById('pf-desc').value.trim();
+  const seller = document.getElementById('pf-seller').value.trim();
+  const phone  = document.getElementById('pf-phone').value.trim();
+  const email  = document.getElementById('pf-email').value.trim();
+  const fb     = document.getElementById('pf-fb').value.trim();
+  const ig     = document.getElementById('pf-ig').value.trim();
+
+  const errEl = document.getElementById('propFormErr');
+  if(!title||!loc||!price||!size||!seller||!phone||!email||!img){
+    errEl.textContent = '❌ Please fill all required fields (*).';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+
+  if(editingId !== null){
+    // UPDATE existing
+    const idx = properties.findIndex(x=>x.id===editingId);
+    if(idx>-1){
+      properties[idx] = {...properties[idx], title, type, city, loc, price, size, beds, baths, badge, badgeClass, img, img2, img3, video, desc, seller, phone, email, fb, ig};
+      showToast('✅ Property updated successfully!');
+    }
+  } else {
+    // ADD new
+    const newProp = { id:nextId++, title, type, city, loc, price, size, beds, baths, badge, badgeClass, img, img2, img3, video, desc, seller, phone, email, fb, ig };
+    properties.unshift(newProp);
+    showToast('✅ Property added successfully!');
+  }
+
+  closePropModal();
+  renderAdminTables();
+  populateGrid('featuredGrid','all');
+  populateGrid('buyGrid','all');
+}
+
+// ==================== DELETE ====================
+function confirmDeleteProperty(id){
+  deleteTargetId = id;
+  const p = properties.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent = 'Delete Property';
+  document.getElementById('modalMsg').textContent = `Are you sure you want to delete "${p?p.title:'this property'}"? This cannot be undone.`;
+  document.getElementById('modalConfirmBtn').onclick = function(){
+    properties = properties.filter(x=>x.id!==deleteTargetId);
+    showToast('🗑️ Property deleted successfully.');
+    closeModal();
+    renderAdminTables();
+    populateGrid('featuredGrid','all');
+    populateGrid('buyGrid','all');
+  };
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function approveProperty(id){
+  const p = properties.find(x=>x.id===id);
+  if(p){ p.status = 'active'; showToast('✅ Property approved and published!'); renderAdminTables(); }
+}
+
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('show'); }
+
+// ==================== ADMIN TABLES ====================
+function makePropertyRow(p, showApprove=false){
+  const actions = showApprove
+    ? `<button class="action-btn approve" onclick="approveProperty(${p.id})">Approve</button>
+       <button class="action-btn del" onclick="confirmDeleteProperty(${p.id})">Reject</button>`
+    : `<button class="action-btn view" onclick="openDetail(${p.id})">View</button>
+       <button class="action-btn edit" onclick="openEditPropertyModal(${p.id})">Edit</button>
+       <button class="action-btn del" onclick="confirmDeleteProperty(${p.id})">Delete</button>`;
+  return `<tr>
+    <td><img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=100'" style="width:54px;height:42px;object-fit:cover;border-radius:7px;margin-right:10px;vertical-align:middle"><strong>${p.title}</strong><br><small style="color:var(--ls)">${p.size} · ${p.type}</small></td>
+    <td>${p.seller}<br><small style="color:var(--ls)">${p.email}</small><br><small style="color:var(--ls)">${p.phone}</small></td>
+    <td>${p.city}</td>
+    <td><strong style="color:var(--eb)">${p.price}</strong></td>
+    <td><span class="sbadge ${showApprove?'s-pending':'s-active'}">${showApprove?'Pending':'Active'}</span></td>
+    <td style="white-space:nowrap">${actions}</td>
+  </tr>`;
+}
+
+const TABLE_HEAD = '<thead><tr><th>Property</th><th>Seller / Contact</th><th>City</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>';
+
+function renderAdminTables(){
+  const setT = (id, rows) => {
+    const el = document.getElementById(id); if(!el) return;
+    el.innerHTML = TABLE_HEAD + '<tbody>' + (rows||`<tr><td colspan="6" style="text-align:center;color:var(--ls);padding:36px">No records found</td></tr>`) + '</tbody>';
+  };
+
+  setT('adminRecentTable',  properties.map(p=>makePropertyRow(p)).join(''));
+  setT('adminAllProps',     properties.map(p=>makePropertyRow(p)).join(''));
+  setT('adminPlots',        properties.filter(p=>p.type==='plot').map(p=>makePropertyRow(p)).join(''));
+  setT('adminApts',         properties.filter(p=>p.type==='apartment').map(p=>makePropertyRow(p)).join(''));
+  setT('adminCommercial',   properties.filter(p=>p.type==='commercial').map(p=>makePropertyRow(p)).join(''));
+  setT('adminPending',      properties.slice(0,4).map(p=>makePropertyRow(p,true)).join(''));
+
+  // Update dashboard stat counts
+  const statEls = document.querySelectorAll('.stat-num');
+  if(statEls[0]) statEls[0].textContent = properties.length;
+  if(statEls[1]) statEls[1].textContent = properties.filter(p=>p.type==='plot').length;
+  if(statEls[2]) statEls[2].textContent = properties.filter(p=>p.type==='apartment').length;
+
+  // Users Table
+  const userHd = '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Listings</th><th>Actions</th></tr></thead>';
+  const usersData = [
+    ['Adnan Khan','adnan@gmail.com','+92 300 1234567','Agent','4','s-active'],
+    ['Sara Rehman','sara@email.com','+92 321 9876543','Seller','2','s-sold'],
+    ['Muhammad Hassan','mhassan@mail.com','+92 333 1234567','Buyer','0','s-active'],
+    ['Fatima Zahra','fatima@mail.com','+92 322 1234567','Seller','1','s-active'],
+    ['Zara Sheikh','zara@mail.com','+92 312 9876543','Agent','3','s-active'],
+    ['Tariq Mehmood','tariq@mail.com','+92 300 5555555','Seller','1','s-sold'],
+    ['Nadia Iqbal','nadia@mail.com','+92 315 7777777','Buyer','0','s-active'],
+  ];
+  const userRows = usersData.map(u=>`<tr>
+    <td><strong>${u[0]}</strong></td>
+    <td><a href="mailto:${u[1]}" style="color:var(--eb)">${u[1]}</a></td>
+    <td>${u[2]}</td>
+    <td><span class="sbadge ${u[5]}">${u[3]}</span></td>
+    <td>${u[4]}</td>
+    <td><button class="action-btn view" onclick="showToast('Profile: ${u[0]}')">View</button>
+        <button class="action-btn del" onclick="showToast('${u[0]} suspended')">Suspend</button></td>
+  </tr>`).join('');
+  const uEl = document.getElementById('adminUsers');
+  if(uEl) uEl.innerHTML = userHd + '<tbody>' + userRows + '</tbody>';
+
+  // Contacts Table
+  const conHd = '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>';
+  const contacts = [
+    ['Ali Khan','ali@mail.com','+92 300 1111111','Property Question','Interested in DHA Phase 2 house, please call back.','2025-05-10'],
+    ['Sana Mir','sana@mail.com','+92 321 2222222','General Inquiry','How do I list my property on EstateVault?','2025-05-09'],
+    ['Hassan Raza','hraza@mail.com','+92 333 3333333','List My Property','I have a 1 Kanal house in F-7 Islamabad to sell.','2025-05-09'],
+    ['Mehreen Baig','mehreen@mail.com','+92 322 4444444','Technical Support','The video tour is not loading on mobile.','2025-05-08'],
+    ['Usman Khalid','usman@mail.com','+92 315 5555555','Partnership','Interested in becoming an agent partner.','2025-05-07'],
+  ];
+  const conRows = contacts.map(c=>`<tr>
+    <td><strong>${c[0]}</strong></td>
+    <td><a href="mailto:${c[1]}" style="color:var(--eb)">${c[1]}</a></td>
+    <td>${c[2]}</td><td>${c[3]}</td>
+    <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c[4]}</td>
+    <td style="color:var(--ls);font-size:.78rem">${c[5]}</td>
+    <td><button class="action-btn view" onclick="showToast('Reply to ${c[0]}')">Reply</button>
+        <button class="action-btn del" onclick="showToast('Message deleted')">Delete</button></td>
+  </tr>`).join('');
+  const cEl = document.getElementById('adminContacts');
+  if(cEl) cEl.innerHTML = conHd + '<tbody>' + conRows + '</tbody>';
+}
+
+function showAdminTab(tab){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('show'));
+  const el = document.getElementById('admin-panel-'+tab); if(el) el.classList.add('show');
+  document.querySelectorAll('.sb-menu li a').forEach(a=>a.classList.remove('active'));
+  if(tab==='dashboard') renderAdminTables();
+}
+
+// ==================== USER DASHBOARD ====================
+function renderUserListings(){
+  const el = document.getElementById('userListings'); if(!el) return;
+  el.innerHTML = '<div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Property</th><th>Price</th><th>Status</th><th>Views</th><th>Actions</th></tr></thead><tbody>' +
+    properties.slice(0,3).map(p=>`<tr>
+      <td><strong>${p.title}</strong><br><small style="color:var(--ls)">${p.loc}</small></td>
+      <td><strong style="color:var(--eb)">${p.price}</strong></td>
+      <td><span class="sbadge s-active">Active</span></td>
+      <td>${Math.floor(Math.random()*800)+100}</td>
+      <td><button class="action-btn view" onclick="openDetail(${p.id})">View</button>
+          <button class="action-btn del" onclick="showToast('Removed from your listings')">Remove</button></td>
+    </tr>`).join('') +
+    '</tbody></table></div>';
+}
+
+// ==================== TOAST ====================
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+// ==================== INIT ====================
+populateGrid('featuredGrid','all');
+</script>
+</body>
+</html>
